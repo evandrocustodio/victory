@@ -88,6 +88,7 @@ export interface CallbackArgs {
   active: boolean;
   datum: any;
   horizontal: boolean;
+  index: number;
   x: number;
   y: number;
   scale?: {
@@ -98,9 +99,11 @@ export interface CallbackArgs {
 
 export type VictoryStringOrNumberCallback = (args: CallbackArgs) => string | number;
 export type VictoryNumberCallback = (args: CallbackArgs) => number;
+export type VictoryStringCallback = (args: CallbackArgs) => string;
 export type VictoryPaddingCallback = (args: CallbackArgs) => number | BlockProps;
 export type StringOrNumberOrCallback = string | number | VictoryStringOrNumberCallback;
 export type NumberOrCallback = number | VictoryNumberCallback;
+export type StringOrCallback = string | VictoryStringCallback;
 export type PaddingOrCallback = number | BlockProps | VictoryPaddingCallback;
 
 export type SliceNumberOrCallback<T, P = null> = number | ((props: Omit<T, P>) => number);
@@ -139,7 +142,7 @@ export interface VictoryAnimationProps {
   data?: AnimationData;
 }
 
-export class VictoryAnimation extends React.Component<VictoryAnimationProps, any> {}
+export class VictoryAnimation extends React.Component<VictoryAnimationProps, any> { }
 
 // #endregion
 
@@ -225,7 +228,7 @@ export interface VictoryLabelProps {
   dy?: StringOrNumberOrCallback;
 }
 
-export class VictoryLabel extends React.Component<VictoryLabelProps, any> {}
+export class VictoryLabel extends React.Component<VictoryLabelProps, any> { }
 
 // #endregion
 
@@ -249,13 +252,13 @@ export interface VictoryContainerProps {
   portalZIndex?: number;
   responsive?: boolean;
   style?: React.CSSProperties;
-  tabIndex?: number;
+  tabIndex?: NumberOrCallback;
   theme?: VictoryThemeDefinition;
   title?: string;
   width?: number;
 }
 
-export class VictoryContainer extends React.Component<VictoryContainerProps, any> {}
+export class VictoryContainer extends React.Component<VictoryContainerProps, any> { }
 
 // #endregion
 
@@ -280,7 +283,7 @@ export interface VictoryClipContainerProps {
   translateY?: number;
 }
 
-export class VictoryClipContainer extends React.Component<VictoryClipContainerProps, any> {}
+export class VictoryClipContainer extends React.Component<VictoryClipContainerProps, any> { }
 
 // #endregion
 
@@ -493,12 +496,12 @@ export interface EventPropTypeInterface<TTarget, TEventKey> {
   eventKey?: TEventKey;
   eventHandlers: {
     [key: string]:
-      | {
-          (event: React.SyntheticEvent<any>): EventCallbackInterface<TTarget, TEventKey>;
-        }
-      | {
-          (event: React.SyntheticEvent<any>): EventCallbackInterface<TTarget, TEventKey>[];
-        };
+    | {
+      (event: React.SyntheticEvent<any>): EventCallbackInterface<TTarget, TEventKey>;
+    }
+    | {
+      (event: React.SyntheticEvent<any>): EventCallbackInterface<TTarget, TEventKey>[];
+    };
   };
 }
 
@@ -512,9 +515,9 @@ export type PaddingType = number | [number, number];
 export type DomainPaddingPropType =
   | PaddingType
   | {
-      x?: PaddingType;
-      y?: PaddingType;
-    };
+    x?: PaddingType;
+    y?: PaddingType;
+  };
 
 export type RangeTuple = [number, number];
 export type RangePropType = RangeTuple | { x?: RangeTuple; y?: RangeTuple };
@@ -536,9 +539,9 @@ export type CategoryPropType =
   | { x: string[] }
   | { y: string[] }
   | {
-      x: string[];
-      y: string[];
-    };
+    x: string[];
+    y: string[];
+  };
 
 export type DataGetterPropType =
   | number
@@ -599,12 +602,12 @@ export interface VictoryCommonProps {
   polar?: boolean;
   range?: RangePropType;
   scale?:
-    | ScalePropType
-    | D3Scale
-    | {
-        x?: ScalePropType | D3Scale;
-        y?: ScalePropType | D3Scale;
-      };
+  | ScalePropType
+  | D3Scale
+  | {
+    x?: ScalePropType | D3Scale;
+    y?: ScalePropType | D3Scale;
+  };
   sharedEvents?: { events: any[]; getEventState: Function };
   singleQuadrantDomainPadding?: boolean | { x?: boolean; y?: boolean };
   standalone?: boolean;
@@ -614,6 +617,7 @@ export interface VictoryCommonProps {
 
 export interface VictoryCommonPrimitiveProps {
   active?: boolean;
+  ariaLabel?: StringOrCallback;
   className?: string;
   clipPath?: string;
   data?: any;
@@ -627,7 +631,7 @@ export interface VictoryCommonPrimitiveProps {
   scale?: any;
   shapeRendering?: string;
   style?: any;
-  tabIndex?: number | Function;
+  tabIndex?: NumberOrCallback;
   transform?: string;
 }
 
@@ -699,7 +703,7 @@ export interface VictoryPortalProps {
   groupComponent?: React.ReactElement;
 }
 
-export class VictoryPortal extends React.Component<VictoryPortalProps, any> {}
+export class VictoryPortal extends React.Component<VictoryPortalProps, any> { }
 
 // #endregion
 
@@ -715,7 +719,7 @@ export interface ArcProps extends VictoryCommonPrimitiveProps {
   startAngle?: number;
 }
 
-export class Arc extends React.Component<ArcProps> {}
+export class Arc extends React.Component<ArcProps> { }
 
 export interface BackgroundProps extends VictoryCommonPrimitiveProps {
   circleComponent?: React.ReactElement;
@@ -726,7 +730,7 @@ export interface BackgroundProps extends VictoryCommonPrimitiveProps {
   y?: number;
 }
 
-export class Background extends React.Component<BackgroundProps> {}
+export class Background extends React.Component<BackgroundProps> { }
 
 export interface BorderProps extends VictoryCommonPrimitiveProps {
   width?: number;
@@ -736,14 +740,14 @@ export interface BorderProps extends VictoryCommonPrimitiveProps {
   y?: number;
 }
 
-export class Border extends React.Component<BorderProps> {}
+export class Border extends React.Component<BorderProps> { }
 
 export interface ClipPathProps extends VictoryCommonPrimitiveProps {
   children?: React.ReactNode[] | React.ReactNode;
   clipId?: number | string;
 }
 
-export class ClipPath extends React.Component<ClipPathProps> {}
+export class ClipPath extends React.Component<ClipPathProps> { }
 
 export interface LineSegmentProps extends VictoryCommonPrimitiveProps {
   datum?: any;
@@ -754,7 +758,7 @@ export interface LineSegmentProps extends VictoryCommonPrimitiveProps {
   y2?: number;
 }
 
-export class LineSegment extends React.Component<LineSegmentProps> {}
+export class LineSegment extends React.Component<LineSegmentProps> { }
 
 export interface PointProps extends VictoryCommonPrimitiveProps {
   datum?: any;
@@ -766,7 +770,7 @@ export interface PointProps extends VictoryCommonPrimitiveProps {
   y?: number;
 }
 
-export class Point extends React.Component<PointProps> {}
+export class Point extends React.Component<PointProps> { }
 
 export interface TextProps extends VictoryCommonPrimitiveProps {
   children?: React.ReactNode;
@@ -774,7 +778,7 @@ export interface TextProps extends VictoryCommonPrimitiveProps {
   title?: string;
 }
 
-export class Text extends React.Component<TextProps> {}
+export class Text extends React.Component<TextProps> { }
 
 export type WhiskerAxes = {
   x1?: number;
@@ -790,20 +794,20 @@ export interface WhiskerProps extends VictoryCommonPrimitiveProps {
   minorWhisker?: WhiskerAxes;
 }
 
-export class Whisker extends React.Component<WhiskerProps> {}
+export class Whisker extends React.Component<WhiskerProps> { }
 
 export interface VictoryPrimitiveShapeProps extends VictoryCommonPrimitiveProps {
   desc?: string;
 }
 
-export class Circle extends React.Component<VictoryPrimitiveShapeProps> {}
+export class Circle extends React.Component<VictoryPrimitiveShapeProps> { }
 
-export class Line extends React.Component<VictoryPrimitiveShapeProps> {}
+export class Line extends React.Component<VictoryPrimitiveShapeProps> { }
 
-export class Path extends React.Component<VictoryPrimitiveShapeProps> {}
+export class Path extends React.Component<VictoryPrimitiveShapeProps> { }
 
-export class Rect extends React.Component<VictoryPrimitiveShapeProps> {}
+export class Rect extends React.Component<VictoryPrimitiveShapeProps> { }
 
-export class TSpan extends React.Component<VictoryCommonPrimitiveProps> {}
+export class TSpan extends React.Component<VictoryCommonPrimitiveProps> { }
 
 // #endregion
